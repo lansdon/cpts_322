@@ -1,0 +1,4 @@
+# Ignore Project Files
+*.xcuserstate
+*.xcbkptlist
+DerivedData/
