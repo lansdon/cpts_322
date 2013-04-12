@@ -10,6 +10,7 @@
 #include <exception>
 #include <string>
 #include <iostream>
+#include <iomanip>
 
 #include "Turing_Machine.h"
 #include "Tape.h"
@@ -37,6 +38,8 @@ int main(int argc, const char * argv[])
 		filename = argv[1];
 	} else {
 		// Error could go here. This is caught during file loading.
+		cout << "You must pass a filename argument.\nExample: <application> <filename>\n";
+//		exit(1);
 	}
 	
 	// Setup configuration
@@ -46,13 +49,12 @@ int main(int argc, const char * argv[])
 	config->MAX_ID_CHARS = 32; // Max number of cells to the left and to the right of the tape head to display in instantaneous description. (default: 32 in each direction)
 	config->FILENAME_BASE = filename;
 	
-	std::cout << "Hello, Turing Machine World!\n";
-	std::cout << "argc = " << argc << endl;
-	
-	
+	cout << setfill('_') << setw(20) << "" << endl;
+	cout << "Hello, Turing Machine World!\n";
+		
 	// Load Turing Machine Object
 	Turing_Machine tm(filename);
-	tm.view_definition();	
+//	tm.view_definition();
 	if (!tm.is_valid_definition()) {
 		cout << "Invalid definition: Shutting down.\n";
 		return -1;

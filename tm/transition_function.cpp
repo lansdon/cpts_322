@@ -91,7 +91,7 @@ void Transition_Function::view() const {
 // Returns the number of stored transitions
 ////////////////////////////////////////////
 int Transition_Function::size() const {
-	return (int)transitions.size();
+	return (int)transitions.size()+1;
 }
 
 

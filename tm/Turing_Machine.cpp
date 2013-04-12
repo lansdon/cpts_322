@@ -54,55 +54,58 @@ bool Turing_Machine::loadDefinition(string filename) {
 	stringstream def;
 	def << filename<< ".def";
 	ifstream definition_file(def.str());
-	if(! definition_file.is_open()) cout << "Error opening file...\n";
-
-	// Extract header/description
-	bool description_complete = false;
-	//	cout << "Loading description:\n";
-	while(definition_file.good() && !description_complete && valid) {
-		string temp;
-		if(definition_file >> temp) {				// extract a string
-			if(uppercase(temp) != "STATES:") {		// prior to STATES: keyword
-				description.push_back(temp);
-				//				cout << " " << temp;
+	if(definition_file.is_open()) {
+		// Extract header/description
+		bool description_complete = false;
+		//	cout << "Loading description:\n";
+		while(definition_file.good() && !description_complete && valid) {
+			string temp;
+			if(definition_file >> temp) {				// extract a string
+				if(uppercase(temp) != "STATES:") {		// prior to STATES: keyword
+					description.push_back(temp);
+					//				cout << " " << temp;
+				} else {
+					description_complete = true;		// STATES: found.
+					cout << endl;
+				}
 			} else {
-				description_complete = true;		// STATES: found.
-				cout << endl;
+				cout << "Error reading description in definition file.\n";
+				valid = false;
 			}
-		} else {
-			cout << "Error reading description in definition file.\n";
-			valid = false;
+		} // end while loop
+		
+		// Now the header and STATES: keyword have been extracted. Continue
+		// loading components:
+		
+		if(valid && definition_file.good())
+			states.load(definition_file, valid);			// states
+		if(valid && definition_file.good())
+			input_alphabet.load(definition_file, valid);	// input alphabet
+		if(valid && definition_file.good())
+			tape_alphabet.load(definition_file, valid);		// input alphabet
+		if(valid && definition_file.good())
+			transition_function.load(definition_file, valid);	// transition funct
+		if(valid && definition_file.good()) {				// initial state
+			string initial_state_temp;
+			if(definition_file >> initial_state_temp && states.is_element(initial_state_temp)) {
+				initial_state = initial_state_temp;
+			} else {
+				valid = false;
+				cout << "Error reading initial state.\n";
+			}
 		}
-	} // end while loop
-	
-	// Now the header and STATES: keyword have been extracted. Continue
-	// loading components:
-	
-	if(valid && definition_file.good())
-		states.load(definition_file, valid);			// states
-	if(valid && definition_file.good())
-		input_alphabet.load(definition_file, valid);	// input alphabet
-	if(valid && definition_file.good())
-		tape_alphabet.load(definition_file, valid);		// input alphabet
-	if(valid && definition_file.good())
-		transition_function.load(definition_file, valid);	// transition funct
-	if(valid && definition_file.good()) {				// initial state
-		string initial_state_temp;
-		if(definition_file >> initial_state_temp && states.is_element(initial_state_temp)) {
-			initial_state = initial_state_temp;
-		} else {
-			valid = false;
-			cout << "Error reading initial state.\n";
+		string blank_keyword;
+		if(valid && definition_file.good() && definition_file >> blank_keyword && uppercase(blank_keyword) == "BLANK_CHARACTER:") {
+			tape.load(definition_file, valid);			// blank char (tape)
 		}
+		if(valid && definition_file.good())
+			final_states.load(definition_file, valid);	// final states
+		
+		definition_file.close();		
+	} else {
+		cout << "Error opening file...\n";
+		valid = false;
 	}
-	string blank_keyword;
-	if(valid && definition_file.good() && definition_file >> blank_keyword && uppercase(blank_keyword) == "BLANK_CHARACTER:") {
-		tape.load(definition_file, valid);			// blank char (tape)
-	}
-	if(valid && definition_file.good())
-		final_states.load(definition_file, valid);	// final states
-	
-	definition_file.close();
 	
 	if(valid) {
 		cout << "TM Definition loaded successfully.\n";
@@ -140,7 +143,7 @@ void Turing_Machine::view_definition() const {
 // head.
 ///////////////////////////////////
 void Turing_Machine::view_instantaneous_description(unsigned long maximum_number_of_cells) const {
-	cout << "Instantaneous Description = " <<
+	cout << number_of_transitions << " " <<
 			tape.left(maximum_number_of_cells) <<
 			"[" << current_state << "]" <<
 			tape.right(maximum_number_of_cells) << endl;
@@ -178,7 +181,7 @@ void Turing_Machine::perform_transitions(unsigned long maximum_number_of_transit
 	
 	// Primary Loop - Max Iterations or Crash
 	for(int i=0; i<maximum_number_of_transitions; ++i) {
-		cout << "perform transition:" << i << endl;
+//		cout << "perform transition:" << i << endl;
 		// Search for transition
 		if(transition_function.is_source_state(current_state)) {
 			for(int transition=0; transition < transition_function.size(); ++transition) {
@@ -189,11 +192,17 @@ void Turing_Machine::perform_transitions(unsigned long maximum_number_of_transit
 					current_state = transition_function.destination_state(transition);
 					++number_of_transitions;
 					break;
+				} else if (transition == transition_function.size()-1) {
+					// No transition found !!
+					// error no transition found
+					rejected = true;
+					accepted = false;
+					operating = false;
+					used = true;
 				}
 			}
 		} else {
 			// error no transition found
-			cout << "CRASH - No transition found.\n";
 			rejected = true;
 			accepted = false;
 			operating = false;
@@ -209,6 +218,9 @@ void Turing_Machine::perform_transitions(unsigned long maximum_number_of_transit
 			operating = false;
 			used = true;
 			break;
+		} else if (!operating) {
+			cout << "CRASH - No transition found.\n";
+			break;
 		}
 	}
 }
@@ -218,7 +230,7 @@ void Turing_Machine::perform_transitions(unsigned long maximum_number_of_transit
 // condition.
 ///////////////////////////////////
 void Turing_Machine::terminate_operation() {
-	cout << "Input string " << original_input_string << " not accepted or rejected in " << number_of_transitions << "transitions\n";
+	cout << "Input string " << original_input_string << " not accepted or rejected in " << number_of_transitions << " transitions\n";
 
 //	cout << "TM Operation terminated with " << number_of_transitions << " transitions.\n";
 	operating = false;

@@ -34,6 +34,7 @@ bool Menu::menuLoop() {
 
 
 bool Menu::processUserCommand() {
+	cout << setfill('_') << setw(20) << "" << setfill(' ') << endl;
 	std::cout << "Command:";
 	string cmd;
 	getline(cin, cmd);
