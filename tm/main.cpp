@@ -35,7 +35,7 @@ int main(int argc, const char * argv[])
 		filename = argv[1];
 	} else {
 		cout << "\nYou must pass a single filename argument.\nExample: <application> <filename>\n";
-//		exit(1);
+		exit(1);
 	}
 	
 	// Setup configuration
