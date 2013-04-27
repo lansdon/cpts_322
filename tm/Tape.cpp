@@ -2,7 +2,13 @@
 //  Tape.cpp
 //  tm
 //
-//  Created by Lansdon Page on 3/25/13.
+//	Represents the tape component of the Turing Machine
+//
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 3/25/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
@@ -12,10 +18,12 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include <stdexcept>
 
 #include "Direction.h"
 #include "Uppercase.h"
-#include "Crash.h"
+
+//#include "Crash.h"
 
 using namespace std;
 
@@ -56,10 +64,9 @@ void Tape::initialize(string input_string) {
 }
 
 void Tape::update(char write_character, Direction move_direction) {
-//	move_direction = uppercase(move_direction);
+	move_direction = uppercase(move_direction);
 	if((move_direction == 'L') && (current_cell == 0)) {
-		string error = "Left move from first cell";
-		throw Crash(error);
+		throw runtime_error("Left move from first cell");
 	}
 
 	if((move_direction == 'R') &&
@@ -90,8 +97,7 @@ string Tape::right(unsigned long maximum_number_of_cells) const {
 	}
 	int last_cell = min(end_cell, current_cell+(int)maximum_number_of_cells-1);
 	string value = cells.substr(current_cell, last_cell-current_cell+1);
-	
-	if(value.length() < end_cell-current_cell+1) {
+	if(value.length() < (end_cell-current_cell)) {
 		value.append(">");
 	}
 	return value;

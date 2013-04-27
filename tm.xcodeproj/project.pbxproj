@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		592AC388170FA1F200826A5C /* Uppercase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 592AC386170FA1F200826A5C /* Uppercase.cpp */; };
-		5942E5ED170A4E3C00FFD39E /* Crash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5942E5EB170A4E3C00FFD39E /* Crash.cpp */; };
-		5942E5F3170A5B6A00FFD39E /* String_Pointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5942E5F1170A5B6A00FFD39E /* String_Pointer.cpp */; };
 		5942E5F6170A5C8300FFD39E /* States.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5942E5F4170A5C8300FFD39E /* States.cpp */; };
 		59646F7A170114B800572C65 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59646F79170114B800572C65 /* main.cpp */; };
 		59646F7C170114B800572C65 /* tm.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 59646F7B170114B800572C65 /* tm.1 */; };
@@ -39,9 +37,6 @@
 /* Begin PBXFileReference section */
 		592AC386170FA1F200826A5C /* Uppercase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Uppercase.cpp; sourceTree = "<group>"; };
 		592AC387170FA1F200826A5C /* Uppercase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Uppercase.h; sourceTree = "<group>"; };
-		5942E5EB170A4E3C00FFD39E /* Crash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Crash.cpp; sourceTree = "<group>"; };
-		5942E5EC170A4E3C00FFD39E /* Crash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crash.h; sourceTree = "<group>"; };
-		5942E5F1170A5B6A00FFD39E /* String_Pointer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = String_Pointer.cpp; sourceTree = "<group>"; };
 		5942E5F2170A5B6A00FFD39E /* String_Pointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = String_Pointer.h; sourceTree = "<group>"; };
 		5942E5F4170A5C8300FFD39E /* States.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = States.cpp; sourceTree = "<group>"; };
 		5942E5F5170A5C8300FFD39E /* States.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = States.h; sourceTree = "<group>"; };
@@ -56,13 +51,13 @@
 		59646F8C17011B7A00572C65 /* Turing_Machine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Turing_Machine.h; sourceTree = "<group>"; };
 		59646F8E17011CAF00572C65 /* Tape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tape.cpp; sourceTree = "<group>"; };
 		59646F8F17011CAF00572C65 /* Tape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tape.h; sourceTree = "<group>"; };
-		59646F9117011CF700572C65 /* Input_Alphabet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Input_Alphabet.cpp; sourceTree = "<group>"; };
-		59646F9217011CF700572C65 /* Input_Alphabet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Input_Alphabet.h; sourceTree = "<group>"; };
+		59646F9117011CF700572C65 /* Input_Alphabet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Input_Alphabet.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		59646F9217011CF700572C65 /* Input_Alphabet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Input_Alphabet.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		59646F9417011D4C00572C65 /* Tape_Alphabet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tape_Alphabet.cpp; sourceTree = "<group>"; };
 		59646F9517011D4C00572C65 /* Tape_Alphabet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tape_Alphabet.h; sourceTree = "<group>"; };
-		59646F9A17011D9800572C65 /* Final_States.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Final_States.cpp; sourceTree = "<group>"; };
-		59646F9B17011D9800572C65 /* Final_States.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Final_States.h; sourceTree = "<group>"; };
-		59E5346017152BCA00FEAA0E /* Direction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Direction.h; sourceTree = "<group>"; };
+		59646F9A17011D9800572C65 /* Final_States.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Final_States.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		59646F9B17011D9800572C65 /* Final_States.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Final_States.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		59E5346017152BCA00FEAA0E /* Direction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Direction.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		59E534641717A3C000FEAA0E /* Menu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Menu.cpp; sourceTree = "<group>"; };
 		59E534651717A3C100FEAA0E /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,32 +92,29 @@
 		59646F78170114B800572C65 /* tm */ = {
 			isa = PBXGroup;
 			children = (
-				59646F7B170114B800572C65 /* tm.1 */,
-				5942E5EB170A4E3C00FFD39E /* Crash.cpp */,
+				59E5346017152BCA00FEAA0E /* Direction.h */,
 				59646F9A17011D9800572C65 /* Final_States.cpp */,
+				59646F9B17011D9800572C65 /* Final_States.h */,
 				59646F9117011CF700572C65 /* Input_Alphabet.cpp */,
+				59646F9217011CF700572C65 /* Input_Alphabet.h */,
 				59646F79170114B800572C65 /* main.cpp */,
 				59E534641717A3C000FEAA0E /* Menu.cpp */,
-				5942E5F4170A5C8300FFD39E /* States.cpp */,
-				5942E5F1170A5B6A00FFD39E /* String_Pointer.cpp */,
-				59646F8E17011CAF00572C65 /* Tape.cpp */,
-				59646F9417011D4C00572C65 /* Tape_Alphabet.cpp */,
-				59646F85170115FE00572C65 /* Transition.cpp */,
-				59646F821701150200572C65 /* Transition_Function.cpp */,
-				59646F8B17011B7A00572C65 /* Turing_Machine.cpp */,
-				592AC386170FA1F200826A5C /* Uppercase.cpp */,
-				5942E5EC170A4E3C00FFD39E /* Crash.h */,
-				59E5346017152BCA00FEAA0E /* Direction.h */,
-				59646F9B17011D9800572C65 /* Final_States.h */,
-				59646F9217011CF700572C65 /* Input_Alphabet.h */,
 				59E534651717A3C100FEAA0E /* Menu.h */,
+				5942E5F4170A5C8300FFD39E /* States.cpp */,
 				5942E5F5170A5C8300FFD39E /* States.h */,
 				5942E5F2170A5B6A00FFD39E /* String_Pointer.h */,
+				59646F8E17011CAF00572C65 /* Tape.cpp */,
 				59646F8F17011CAF00572C65 /* Tape.h */,
+				59646F9417011D4C00572C65 /* Tape_Alphabet.cpp */,
 				59646F9517011D4C00572C65 /* Tape_Alphabet.h */,
+				59646F7B170114B800572C65 /* tm.1 */,
+				59646F85170115FE00572C65 /* Transition.cpp */,
 				59646F86170115FE00572C65 /* Transition.h */,
+				59646F821701150200572C65 /* Transition_Function.cpp */,
 				59646F831701150200572C65 /* Transition_Function.h */,
+				59646F8B17011B7A00572C65 /* Turing_Machine.cpp */,
 				59646F8C17011B7A00572C65 /* Turing_Machine.h */,
+				592AC386170FA1F200826A5C /* Uppercase.cpp */,
 				592AC387170FA1F200826A5C /* Uppercase.h */,
 			);
 			path = tm;
@@ -187,8 +179,6 @@
 				59646F9317011CF700572C65 /* Input_Alphabet.cpp in Sources */,
 				59646F9617011D4D00572C65 /* Tape_Alphabet.cpp in Sources */,
 				59646F9C17011D9800572C65 /* Final_States.cpp in Sources */,
-				5942E5ED170A4E3C00FFD39E /* Crash.cpp in Sources */,
-				5942E5F3170A5B6A00FFD39E /* String_Pointer.cpp in Sources */,
 				5942E5F6170A5C8300FFD39E /* States.cpp in Sources */,
 				592AC388170FA1F200826A5C /* Uppercase.cpp in Sources */,
 				59E534661717A3C100FEAA0E /* Menu.cpp in Sources */,

@@ -1,17 +1,25 @@
 //
 //  States.h
 //  tm
+// Represents the list of valid states
 //
-//  Created by Lansdon Page on 3/25/13.
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 3/25/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
 #ifndef __tm__States__
 #define __tm__States__
 
+#include <fstream>
 #include <string>
 #include <vector>
+#include <sstream>
 #include "String_Pointer.h"
+#include "Uppercase.h"
 
 using namespace std;
 
@@ -32,7 +40,7 @@ public:
 	/////////////////////////////////////
 	// Returns true if value is found in the set of states.
 	/////////////////////////////////////
-	bool is_element(string value);
+	bool is_element(string value) const ;
 	
 //	static int total_number_of_states() { return number_of_states; }
 	

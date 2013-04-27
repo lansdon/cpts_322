@@ -2,7 +2,13 @@
 //  Input_Alphabet.cpp
 //  tm
 //
-//  Created by Lansdon Page on 3/25/13.
+//This class represents the Input Alphabet which is the set of characters that are valid for an input string. This is a subset of the Tape Alphabet and excludes at minimum, the blank character.
+//
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 3/25/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
@@ -11,7 +17,6 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-
 #include "Uppercase.h"
 using namespace std;
 
@@ -35,7 +40,7 @@ void Input_Alphabet::load(ifstream& definition, bool& valid) {
 				   (temp_char[0] != ']')) {
 					alphabet.push_back(temp_char[0]);
 				} else {
-					cout << "Illegal Blank Character.\n";
+					cout << "Illegal Tape Alphabet Character.\n";
 					valid = false;
 				}
 			} else {
@@ -81,7 +86,7 @@ bool Input_Alphabet::is_element(char val) const {
 /////////////////////////////////////
 // Returns the character at the specified index
 /////////////////////////////////////
-char Input_Alphabet::element(unsigned long index) {
+char Input_Alphabet::element(unsigned long index) const {
 	if(index < alphabet.size()) {
 		return alphabet[index];
 	}

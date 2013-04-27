@@ -2,17 +2,23 @@
 //  States.cpp
 //  tm
 //
-//  Created by Lansdon Page on 3/25/13.
+// Represents the list of valid states
+//
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 3/25/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
 #include "States.h"
-#include "string_pointer.h"
-#include "Uppercase.h"
 #include <fstream>
 #include <string>
 #include <vector>
 #include <sstream>
+#include "String_Pointer.h"
+#include "Uppercase.h"
 
 using namespace std;
 
@@ -56,8 +62,8 @@ void States::view() const {
 /////////////////////////////////////
 // Returns true if value is found in the set of states.
 /////////////////////////////////////
-bool States::is_element(string value) {
-	vector<string>::iterator it = states.begin();
+bool States::is_element(string value) const {
+	vector<string>::const_iterator it = states.begin();
 	while(it != states.end()) {
 		if(value == *it) return true;
 		++it;

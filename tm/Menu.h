@@ -2,7 +2,14 @@
 //  Menu.h
 //  tm
 //
-//  Created by Lansdon Page on 4/11/13.
+// This menu system is the application UI and drives
+// the entire program. Handles all user input.
+//
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 4/11/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
@@ -10,15 +17,20 @@
 #define __tm__Menu__
 
 #include <string>
+#include <string>
+#include <iomanip>
+#include <sstream>
+#include <fstream>
 #include "Turing_Machine.h"
+#include "Uppercase.h"
 using namespace std;
 
 
 struct app_configuration {
-	unsigned long MAX_TRANSITIONS = 1; // Max number of transitions to perform at a time (default 1)
-	bool HELP_ON = false; // Whether or not help messages are provided to the user for all prompt:   default (NO messages)
-	unsigned long MAX_ID_CHARS = 32;	// Max number of cells to the left and to the right of the tape head to display in instantaneous
-	string FILENAME_BASE = "";
+	unsigned long MAX_TRANSITIONS;// = 1; // Max number of transitions to perform at a time (default 1)
+	bool HELP_ON;// = false; // Whether or not help messages are provided to the user for all prompt:   default (NO messages)
+	unsigned long MAX_ID_CHARS;// = 32;	// Max number of cells to the left and to the right of the tape head to display in instantaneous
+	string FILENAME_BASE;// = "";
 };
 
 // generic solution

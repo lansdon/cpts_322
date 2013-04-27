@@ -2,20 +2,26 @@
 //  Transition_Function.cpp
 //  tm
 //
-//  Created by Lansdon Page on 3/25/13.
+//	Represents the list of defined transitions
+//
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 3/25/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
 #include "Transition_Function.h"
 
 #include <iostream>
-#include "Transition.h"
-#include "Direction.h"
 #include <string>
 #include <vector>
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include "Transition.h"
+#include "Direction.h"
 #include "Uppercase.h"
 using namespace std;
 
@@ -71,7 +77,7 @@ void Transition_Function::load(ifstream& definition, bool& valid) {
 ////////////////////////////////////////////
 void Transition_Function::view() const {
 	stringstream msg;
-	msg << "\nLoaded Transitions:\n";
+	msg << "\n----- Loaded Transitions: -----\n";
 	vector<Transition>::const_iterator it = transitions.begin();
 	while(it != transitions.end()) {
 		msg << "Transition(" <<
@@ -91,20 +97,20 @@ void Transition_Function::view() const {
 // Returns the number of stored transitions
 ////////////////////////////////////////////
 int Transition_Function::size() const {
-	return (int)transitions.size()+1;
+	return (int)transitions.size();
 }
 
 
 ////////////////////////////////////////////
-//
+// return source state
 ////////////////////////////////////////////
-string Transition_Function::source_state(unsigned long index) {
+string Transition_Function::source_state(unsigned long index) const {
 	return transitions[index].source_state();
 }
 
 
 ////////////////////////////////////////////
-//
+// return read char
 ////////////////////////////////////////////
 char Transition_Function::read_character(unsigned long index) const {
 	return transitions[index].read_character();
@@ -113,7 +119,7 @@ char Transition_Function::read_character(unsigned long index) const {
 
 
 ////////////////////////////////////////////
-//
+// return detination state
 ////////////////////////////////////////////
 string Transition_Function::destination_state(unsigned long index) const {
 	return transitions[index].destination_state();

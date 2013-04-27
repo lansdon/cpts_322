@@ -2,11 +2,20 @@
 //  Turing_Machine.cpp
 //  tm
 //
-//  Created by Lansdon Page on 3/25/13.
+//	The delegate turing machine object that
+// contains all components and handles
+// delegation of tasks
+//
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 3/25/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
 #include "Turing_Machine.h"
+#include <sstream>
 #include "Final_States.h"
 #include "Input_Alphabet.h"
 #include "States.h"
@@ -14,7 +23,6 @@
 #include "Tape_Alphabet.h"
 #include "Transition.h"
 #include "Transition_Function.h"
-#include <sstream>
 #include "Uppercase.h"
 
 
@@ -46,16 +54,84 @@ Turing_Machine::Turing_Machine(string definition_filename) :
 }
 
 
+///////////////////////////////////////////
+// Utility function for extracting description
+// - Maintains whitespace
+/////////////////////////////////////////////
+bool Turing_Machine::parseDescription(ifstream& definition_file) {
+	unsigned long keyword_start = string::npos;
+	bool description_complete = false;
+	bool valid = true;
+	
+	// Extracting lines for description
+	while(definition_file.good() && !description_complete && valid) {
+		string line = "";
+		if(getline(definition_file,line)) {				// extract a string
+			
+			string upper_line = uppercase(line);
+			string final_line = "";
+			
+			keyword_start = upper_line.find(" STATES:");
 
+			// search for first VALID keyword.
+			while(keyword_start != string::npos && !description_complete) {
+				string desc_substr = line.substr(0, keyword_start);
+				string keyword = line.substr(keyword_start+1, 7);
+				string rest_of_line = line.substr(keyword_start+8, string::npos);
+				
+				// Valid keyword found in the middle of the line with proper white space surrounding it
+				if((rest_of_line.length() > 0 && rest_of_line[0] == ' ' ) ||
+				   (rest_of_line.length() == 0) ) {
+					final_line.append(desc_substr);
+					
+//					description.push_back(final_line);
+					description_complete = true;
+					
+					// Put back reverse loop for rest_of_line here
+					for(unsigned long i=rest_of_line.length(); i > 0; --i) {
+						definition_file.unget();
+					}
+				} else {
+					final_line.append(desc_substr);
+					final_line.append(line.substr(keyword_start, 8));	// add false keyword with preceding space
+					line = rest_of_line;
+					upper_line = uppercase(rest_of_line);
+				}
+				keyword_start = upper_line.find(" STATES:");
+			}
+
+			if(final_line.length() > 0) {
+				description.push_back(final_line);
+			} else {
+				description.push_back(line);
+			}
+	
+		} else {
+			cout << "Error reading description in definition file.\n";
+			valid = false;
+		}
+	} // end while loop
+	
+	if(!description_complete) cout << "Error - STATES: keyword not found\n";
+	
+	return (valid && description_complete);
+}
+
+
+/////////////////////////////////////////////////
+//o	Loads definition file and calls load for every component.
+/////////////////////////////////////////////////
 bool Turing_Machine::loadDefinition(string filename) {
 	bool valid = true;
 	
 	// Load definition .def file
 	stringstream def;
 	def << filename<< ".def";
-	ifstream definition_file(def.str());
+	ifstream definition_file(def.str().c_str());
 	if(definition_file.is_open()) {
 		// Extract header/description
+		valid = parseDescription(definition_file);
+/*
 		bool description_complete = false;
 		//	cout << "Loading description:\n";
 		while(definition_file.good() && !description_complete && valid) {
@@ -73,19 +149,27 @@ bool Turing_Machine::loadDefinition(string filename) {
 				valid = false;
 			}
 		} // end while loop
-		
+*/		
 		// Now the header and STATES: keyword have been extracted. Continue
 		// loading components:
 		
-		if(valid && definition_file.good())
+		if(valid && !definition_file.eof())
 			states.load(definition_file, valid);			// states
-		if(valid && definition_file.good())
+		else valid = false;
+		
+		if(valid && !definition_file.eof())
 			input_alphabet.load(definition_file, valid);	// input alphabet
-		if(valid && definition_file.good())
-			tape_alphabet.load(definition_file, valid);		// input alphabet
-		if(valid && definition_file.good())
+		else valid = false;
+		
+		if(valid && !definition_file.eof())
+			tape_alphabet.load(definition_file, valid);		// tape alphabet
+		else valid = false;
+		
+		if(valid && !definition_file.eof())
 			transition_function.load(definition_file, valid);	// transition funct
-		if(valid && definition_file.good()) {				// initial state
+		else valid = false;
+		
+		if(valid && !definition_file.eof()) {				// initial state
 			string initial_state_temp;
 			if(definition_file >> initial_state_temp && states.is_element(initial_state_temp)) {
 				initial_state = initial_state_temp;
@@ -94,25 +178,30 @@ bool Turing_Machine::loadDefinition(string filename) {
 				cout << "Error reading initial state.\n";
 			}
 		}
+		else valid = false;
+
 		string blank_keyword;
-		if(valid && definition_file.good() && definition_file >> blank_keyword && uppercase(blank_keyword) == "BLANK_CHARACTER:") {
+		if(valid && !definition_file.eof() && definition_file >> blank_keyword && uppercase(blank_keyword) == "BLANK_CHARACTER:") {
 			tape.load(definition_file, valid);			// blank char (tape)
 		}
-		if(valid && definition_file.good())
+		else valid = false;
+		
+		if(valid && !definition_file.eof())
 			final_states.load(definition_file, valid);	// final states
+		else valid = false;
 		
 		definition_file.close();		
 	} else {
 		cout << "Error opening file...\n";
 		valid = false;
 	}
-	
+		
 	if(valid) {
-		cout << "TM Definition loaded successfully.\n";
+		cout << "TM Definition loaded successfully...\n";
 	} else {
 		cout << "TM Definition failed to load.\n";
 	}
-	this->valid = valid;	// update valid status
+
 	return valid;
 }
 
@@ -125,7 +214,13 @@ bool Turing_Machine::loadDefinition(string filename) {
 // displays the TM definition in the console
 ///////////////////////////////////
 void Turing_Machine::view_definition() const {
-	cout << "\nTM Definition:\n";
+	cout << "\n*********** TM Definition: **************\n";
+	cout << "Description:\n";
+	vector<string>::const_iterator it = description.begin();
+	while(it!=description.end()) {
+		cout << *it++ << endl;
+	}
+	cout << "*****************************************\n";
 	states.view();
 	input_alphabet.view();
 	tape_alphabet.view();
@@ -133,6 +228,7 @@ void Turing_Machine::view_definition() const {
 	cout << "Initial State = " << initial_state << endl;
 	cout << "Blank Symbol = " << tape.blank_character() << endl;
 	final_states.view();
+	cout << "*****************************************\n";
 	cout << endl << endl;
 }
 
@@ -231,13 +327,10 @@ void Turing_Machine::perform_transitions(unsigned long maximum_number_of_transit
 ///////////////////////////////////
 void Turing_Machine::terminate_operation() {
 	cout << "Input string " << original_input_string << " not accepted or rejected in " << number_of_transitions << " transitions\n";
-
-//	cout << "TM Operation terminated with " << number_of_transitions << " transitions.\n";
 	operating = false;
 	accepted = false;
 	rejected = false;
 	used = true;
-	// clear input string?
 }
 
 ///////////////////////////////////
@@ -272,5 +365,60 @@ bool Turing_Machine::is_valid_input_string(string value) const {
 // Run a validation algorithm on loaded TM
 ///////////////////////////////////
 bool Turing_Machine::is_valid_definition() const {
-	return valid;
+	
+	// input alphabet is subset of tape alphabet
+	for(int i=0; i<input_alphabet.size(); ++i) {
+		if(!tape_alphabet.is_element( input_alphabet.element(i))) {
+			cout << "Invalid definition - Input alphabet is not a subset of tape alphabet.\n";
+			return false;
+		}
+	}
+	
+	// blank char is in tape alphabet and not in input alphabet
+	if(!(tape_alphabet.is_element(tape.blank_character()) && !input_alphabet.is_element(tape.blank_character()))) {
+		cout << "Invalid definition - Blank char cannot be part of input alphabet and must be part of the tape alphabet.\n";
+		return false;
+	}
+	
+	// No transition out of final states
+	for(int i=0; i<final_states.size(); ++i) {
+		if(transition_function.is_source_state(final_states.element(i))) {
+			cout << "Invalid definition - Final states cannot be source states for transitions.\n";
+			return false;
+		}
+		// Final states - must be subset of states
+		if(!states.is_element(final_states.element(i))) {
+			cout << "Invalid definition - Final states must be subset of States\n";
+			return false;
+		}
+	}
+	
+	// Transition states must exist in states
+	for(int i=0; i < transition_function.size();++i) {
+		if(!(states.is_element(transition_function.source_state(i)) && states.is_element(transition_function.destination_state(i)))) {
+			cout << "Invalid definition - Transition function source and destination states must exist in States\n";
+			return false;
+		}
+		// validate transition read/write chars as subset of tape alphabet
+		if(!(tape_alphabet.is_element(transition_function.read_character(i))) &&
+		   (tape_alphabet.is_element(transition_function.write_character(i)))) {
+			cout << "Invalid definition - Transition function source and destination states must exist in States\n";
+			return false;
+		}
+	}
+	
+	// initial state is in states
+	if(!states.is_element(initial_state)) {
+		cout << "Invalid definition - Initial state must exist in States\n";
+		return false;
+	}
+	
+	// Blank char not in input alphabet
+	if(input_alphabet.is_element(tape.blank_character())) {
+		cout << "Invalid definition - Blank char cannot be in input alphabet\n";
+		return false;
+	}
+	
+	
+	return true;	// Passed all the tests!
 };

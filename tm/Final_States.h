@@ -2,7 +2,13 @@
 //  Final_States.h
 //  tm
 //
-//  Created by Lansdon Page on 3/25/13.
+//	Represents the list of final states
+//
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 3/25/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
@@ -11,6 +17,10 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
+#include <iostream>
+#include <fstream>
+#include "Uppercase.h"
 using namespace std;
 
 class Final_States
@@ -29,17 +39,17 @@ public:
 	/////////////////////////////////////
 	// Returns true if value is found in the set of final states.
 	/////////////////////////////////////
-	bool is_element(string value);
+	bool is_element(string value) const;
 
 	/////////////////////////////////////
 	// return number of final states
 	/////////////////////////////////////
-	int size() { return (int)final_states.size(); }
+	int size() const { return (int)final_states.size(); }
 	
 	/////////////////////////////////////
 	// Returns true if value is found in the set of final states.
 	/////////////////////////////////////
-	string element(unsigned long index);
+	string element (unsigned long index) const;
 		
 	
 private:

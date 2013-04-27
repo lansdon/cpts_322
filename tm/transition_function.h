@@ -2,7 +2,13 @@
 //  transition_function.h
 //  tm
 //
-//  Created by Lansdon Page on 3/25/13.
+//	Represents the list of defined transitions
+//
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 3/25/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
@@ -10,11 +16,14 @@
 #define __tm__transition_function__
 
 #include <iostream>
-#include "Transition.h"
-#include "Direction.h"
 #include <string>
 #include <vector>
 #include <fstream>
+#include <sstream>
+#include <iostream>
+#include "Transition.h"
+#include "Direction.h"
+#include "Uppercase.h"
 using namespace std;
 
 
@@ -35,11 +44,36 @@ public:
 	// Returns the number of stored transitions
 	////////////////////////////////////////////
 	int size() const;
-	string source_state(unsigned long index);
+	
+	////////////////////////////////////////////
+	// return source state
+	////////////////////////////////////////////
+	string source_state(unsigned long index) const;
+
+	////////////////////////////////////////////
+	// return read char
+	////////////////////////////////////////////
 	char read_character(unsigned long index) const;
+
+	////////////////////////////////////////////
+	// return detination state
+	////////////////////////////////////////////
 	string destination_state(unsigned long index) const;
+
+	////////////////////////////////////////////
+	// write char of given transition
+	////////////////////////////////////////////
 	char write_character(unsigned long index) const;
+
+	////////////////////////////////////////////
+	// move direction of given transition
+	////////////////////////////////////////////
 	Direction move_direction(unsigned long index) const;
+
+	
+	////////////////////////////////////////////
+	// Find a matching saved transition
+	////////////////////////////////////////////
 	bool is_defined_transition(string source_state,
 							   char read_char,
 							   string& destination_state,

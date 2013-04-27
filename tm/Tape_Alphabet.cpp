@@ -2,7 +2,13 @@
 //  Tape_Alphabet.cpp
 //  tm
 //
-//  Created by Lansdon Page on 3/25/13.
+//	Represents the legal tape alphabet
+//
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 3/25/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
@@ -66,8 +72,8 @@ void Tape_Alphabet::view() const {
 /////////////////////////////////////
 // Returns true if value is found in the current tape alphabet.
 /////////////////////////////////////
-bool Tape_Alphabet::is_element(char val) {
-	vector<char>::iterator it = alphabet.begin();
+bool Tape_Alphabet::is_element(char val) const {
+	vector<char>::const_iterator it = alphabet.begin();
 	while(it != alphabet.end()) {
 		if(val == *it) return true;
 		++it;

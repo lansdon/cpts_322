@@ -1,0 +1,62 @@
+CC      = g++
+CFLAGS  =  #-I/home/scale/g++Projects/gLib/
+LDFLAGS = # -lfltk
+
+all: tm_app clean
+
+tm_app: main.o Turing_Machine.o Menu.o Uppercase.o Final_States.o Tape_Alphabet.o Input_Alphabet.o Transition_Function.o Transition.o Tape.o States.o
+	$(CC) -o $@ $^ 
+	
+main.o: tm/main.cpp tm/Turing_Machine.h tm/Menu.h
+	$(CC) -c $(CFLAGS) $<
+
+Turing_Machine.o: tm/Turing_Machine.cpp tm/Turing_Machine.h tm/Final_States.h tm/Input_Alphabet.h tm/States.h tm/Tape.h tm/Tape_Alphabet.h tm/Transition.h tm/Transition_Function.h tm/Uppercase.o
+	$(CC) -c $(CFLAGS) $<
+
+Menu.o: tm/Menu.cpp tm/Menu.h tm/Uppercase.h tm/Turing_Machine.h
+	$(CC) -c $(CFLAGS) $<
+
+Transition.o: tm/Transition.cpp tm/Transition.h tm/Direction.h
+	$(CC) -c $(CFLAGS) $<
+
+Tape.o: tm/Tape.cpp tm/Tape.h tm/Direction.h tm/Uppercase.h
+	$(CC) -c $(CFLAGS) $<
+
+#Direction.o: Direction.h
+#	$(CC) -c $(CFLAGS) $<
+
+Uppercase.o: tm/Uppercase.cpp tm/Uppercase.h
+	$(CC) -c $(CFLAGS) $<
+
+#Crash.o: Crash.h
+#	$(CC) -c $(CFLAGS) $<
+
+Final_States.o: tm/Final_States.cpp tm/Final_States.h tm/Uppercase.h
+	$(CC) -c $(CFLAGS) $<
+
+Input_Alphabet.o: tm/Input_Alphabet.cpp tm/Input_Alphabet.h tm/Uppercase.h
+	$(CC) -c $(CFLAGS) $<
+
+States.o: tm/States.cpp tm/States.h tm/string_pointer.h tm/Uppercase.h
+	$(CC) -c $(CFLAGS) $<
+
+#string_pointer.o: tm/string_pointer.h
+#	$(CC) -c $(CFLAGS) $<
+
+Tape_Alphabet.o: tm/Tape_Alphabet.cpp tm/Tape_Alphabet.h tm/Uppercase.h
+	$(CC) -c $(CFLAGS) $<
+
+Transition_Function.o: tm/Transition_Function.cpp tm/Transition_Function.h tm/Transition.h tm/Direction.h tm/Uppercase.h
+	$(CC) -c $(CFLAGS) $<
+
+
+
+
+
+.PHONY: clean cleanest
+
+clean:
+	rm *.o
+
+cleanest: clean
+#	rm octhecdec

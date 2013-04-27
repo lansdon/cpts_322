@@ -2,7 +2,13 @@
 //  Final_States.cpp
 //  tm
 //
-//  Created by Lansdon Page on 3/25/13.
+//	Represents the list of final states
+//
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 3/25/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
@@ -56,8 +62,8 @@ void Final_States::view() const{
 /////////////////////////////////////
 // Returns true if value is found in the set of final states.
 /////////////////////////////////////
-bool Final_States::is_element(string value) {
-	vector<string>::iterator it = final_states.begin();
+bool Final_States::is_element(string value) const {
+	vector<string>::const_iterator it = final_states.begin();
 	while(it != final_states.end()) {
 		if(value == *it) return true;
 		++it;
@@ -69,7 +75,7 @@ bool Final_States::is_element(string value) {
 /////////////////////////////////////
 // Returns true if value is found in the set of final states.
 /////////////////////////////////////
-string Final_States::element(unsigned long index) {
+string Final_States::element(unsigned long index) const {
 	if(index < final_states.size()) {
 		return final_states[index];
 	}

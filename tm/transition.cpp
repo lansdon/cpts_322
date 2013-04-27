@@ -2,13 +2,19 @@
 //  transition.cpp
 //  tm
 //
-//  Created by Lansdon Page on 3/25/13.
+//	Represents a single transition definition
+//
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 3/25/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
 #include "Transition.h"
-#include "Direction.h"
 #include <string>
+#include "Direction.h"
 using namespace std;
 
 

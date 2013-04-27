@@ -2,7 +2,13 @@
 //  Tape_Alphabet.h
 //  tm
 //
-//  Created by Lansdon Page on 3/25/13.
+//	Represents the legal tape alphabet
+//
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 3/25/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
@@ -29,7 +35,7 @@ public:
 	/////////////////////////////////////
 	// Returns true if value is found in the current tape alphabet.
 	/////////////////////////////////////
-	bool is_element(char val);
+	bool is_element(char val) const;
 	
 	
 private:

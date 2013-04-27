@@ -1,0 +1,61 @@
+################################################################################
+TARGET      = tm
+BUILD_DIR	= build/
+TARGET_FIN  = $(BUILD_DIR)$(TARGET)
+LDFLAGS     = #-L/usr/local/mysql/lib -lmysqlclient -L/sw/lib -ldl -lz -lstdc++ -lc 
+CFLAGS      = #-O2 -I/sw/include -I/usr/local/mysql/include
+CPPFLAGS    =
+COMPILER    = g++
+
+################################################################################
+CPPSOURCES  = $(wildcard */*.cpp) 
+CSOURCES    = $(wildcard */*.c)
+CPPOBJECTS  = $(CPPSOURCES:%.cpp=tmp/%.o) 
+COBJECTS    = $(CSOURCES:%.c=tmp/%.o)
+CPPDEPENDS  = $(CPPSOURCES:%.cpp=tmp/%.d) 
+CDEPENDS    = $(CSOURCES:%.c=tmp/%.d)
+
+################################################################################
+tmp/%.o: %.cpp Makefile
+	$(COMPILER) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
+
+tmp/%.o: %.c Makefile
+	$(COMPILER) -c $(CFLAGS) $< -o $@
+
+################################################################################
+.PHONY: clean 
+
+$(TARGET_FIN): Makefile $(CPPOBJECTS) $(COBJECTS)
+	@mkdir $(BUILD_DIR)
+	$(COMPILER) -o $@ $(CPPOBJECTS) $(COBJECTS) $(LDFLAGS) 
+#   @strip $@
+
+clean:
+	@rm -rf $(BUILD_DIR)
+	@rm -rf tmp/
+	@rm -f $(TARGET_FIN).tgz
+
+
+################################################################################
+tmp/%.d: %.cpp
+	@echo "Updating dependencies for $< ..."
+	@mkdir -p $(dir $@)
+	@echo 'tmp/$*.o $@ \c' > $@
+	@$(COMPILER) -c $(CFLAGS) $(CPPFLAGS) $< -M >> $@
+
+tmp/%.d: %.c
+	@echo "Updating dependencies for $< ..."
+	@mkdir -p $(dir $@)
+	@echo 'tmp/$*.o $@ \c' > $@
+	@$(COMPILER) -c $(CFLAGS) $< -M >> $@
+
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),install)
+ifneq ($(MAKECMDGOALS),uninstall)
+ifneq ($(MAKECMDGOALS),dist)
+sinclude $(CPPDEPENDS)
+sinclude $(CDEPENDS)
+endif
+endif
+endif
+endif

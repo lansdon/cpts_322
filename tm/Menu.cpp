@@ -2,7 +2,14 @@
 //  Menu.cpp
 //  tm
 //
-//  Created by Lansdon Page on 4/11/13.
+// This menu system is the application UI and drives
+// the entire program. Handles all user input.
+//
+// language: c++
+// computer: macbook air
+// OS: OSX
+// course: cpts_322
+//  Created by  Lansdon Page on 4/11/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
 //
 
@@ -11,6 +18,8 @@
 #include <iomanip>
 #include <sstream>
 #include <fstream>
+#include <climits>
+#include "Turing_Machine.h"
 #include "Uppercase.h"
 using namespace std;
 
@@ -20,9 +29,7 @@ Menu::Menu(app_configuration* cfg, Turing_Machine* turing_machine) :
 	tm(turing_machine),
 	save_input_strings_on_exit(false)
 {
-	
-	loadInputStrings(cfg->FILENAME_BASE);
-	
+	loadInputStrings(cfg->FILENAME_BASE);	
 }
 
 
@@ -34,7 +41,7 @@ bool Menu::menuLoop() {
 
 
 bool Menu::processUserCommand() {
-	cout << setfill('_') << setw(20) << "" << setfill(' ') << endl;
+//	cout << setfill('_') << setw(20) << "" << setfill(' ') << endl;
 	std::cout << "Command:";
 	string cmd;
 	getline(cin, cmd);
@@ -78,9 +85,9 @@ bool Menu::displayMenu() {
 		std::cout << "(Q)uit - Stop the Turing Machine operation\n";
 		std::cout << "(R)un - Run the Turing Machine on the chosen input string. Prompted for a string selection if there isn't an active input string.\n";
 		std::cout << "S(e)t - Set maximum number of transitions to perform in one pass using run command.\n";
-		std::cout << "Sho(w)\n";
-		std::cout << "(T)runcate\n";
-		std::cout << "(V)iew\n";
+		std::cout << "Sho(w) - About this app\n";
+		std::cout << "(T)runcate - Set MAX number of chars per side in ID\n";
+		std::cout << "(V)iew - Show the current TM Definition\n";
 	} else {
 /*
 		std::cout << "\n";
@@ -107,7 +114,7 @@ bool Menu::loadInputStrings(string filename) {
 	// Load definition .def file
 	stringstream def;
 	def << filename<< ".str";
-	ifstream string_file(def.str());
+	ifstream string_file(def.str().c_str());
 	if(! string_file.is_open()) {
 		cout << "Error opening input string file...\n";
 		return false;
@@ -120,7 +127,7 @@ bool Menu::loadInputStrings(string filename) {
 			input_strings.push_back(line);
 			//		cout << "Input string: " << line << endl;
 		} else {
-			cout << "- Invalid input string ignored(" << line << ")\n";
+			cout << "- Invalid input string ignored (\"" << line << "\")\n";
 		}
 	}
 	string_file.close();
@@ -131,7 +138,6 @@ bool Menu::loadInputStrings(string filename) {
 
 
 
-// delete
 /*
  (D)elete
  Delete input string from list (one at a time)
@@ -142,7 +148,10 @@ bool Menu::loadInputStrings(string filename) {
  ENTER = no error, back to main menu
  */
 void Menu::delete_string() {
-	cout << "Delete input string[" << input_strings.size() << "]: ";
+	cout << "Delete input string[";
+	input_strings.size() ?	cout << "1-" << input_strings.size() :
+	cout << "None available";
+	cout << "]: ";
 	string input_string;
 	std::getline(cin, input_string);
 	unsigned long index = atol(input_string.c_str());
@@ -151,13 +160,12 @@ void Menu::delete_string() {
 		save_input_strings_on_exit = true;
 		cout << "\nInput string deleted. (save file queued)\n";
 	} else {
-		cout << "\nError - Invalid selection. " << index << "\n";
-//		cout << "numDigits(index) " << numDigits(index) << "\n";
-//		cout << "input_str.length" << input_string.length() << "\n";
+		if(input_string.length())
+			cout << "\nError - Invalid selection. " << "\n";
 	}
 }
 
-// Set
+
 /*
  S(e)t
  Set maximum number of transitions to perform
@@ -176,32 +184,48 @@ bool Menu::set() {
 		cout << "\nMax transitions changed.\n";
 		return true;
 	}
-	cout << "\nError - Max transitions must be a number > 0.\n";
+	if(input_string.length())
+		cout << "\nError - Max transitions must be a integer from 1 to " << LONG_MAX << "\n";
+
 	return false;
 }
 
-// Help
+
 /*
  (H)elp
  Help User with prompts or not
- change setting for whether or not help messages are provided to user for all prompts input
+ change setting for whether or not help messages are 
+ provided to user for all prompts input
  defaults to NO.    Toggles yes or no
  */
 void Menu::help() {
 	config->HELP_ON = !(config->HELP_ON);
 }
 
-// Insert
+
 /*
  (I)nsert
- Insert input string into the list from Sigma* and append it to list of input strings
+ Insert input string into the list from Sigma* and 
+ append it to list of input strings
  Prompt for input string    "Input string: "
- if string is duplicate of existing string or contains an illegal character -> display appropriate error message
+ if string is duplicate of existing string or contains 
+ an illegal character -> display appropriate error message
 */
 void Menu::insert() {
 	cout << "Input string:";
 	string input_string;
 	std::getline(cin, input_string);
+	
+	// Search for duplicate strings
+	vector<string>::iterator it;
+	for(it=input_strings.begin();it!=input_strings.end();++it) {
+		if(input_string == *it) {
+			cout << "That string already exists in the list.\n";
+			return;
+		}
+	}
+	
+	// Validate string and add it.
 	if(tm->is_valid_input_string(input_string)) {
 		input_strings.push_back(input_string);
 		save_input_strings_on_exit = true;
@@ -211,7 +235,7 @@ void Menu::insert() {
 	}
 }
 
-// List
+
 /*
  (L)ist
  List input strings
@@ -224,13 +248,25 @@ void Menu::insert() {
 */
 void Menu::list() {
 	cout << "\nInput Strings:\n";
+	
+	// empty list message
+	if(input_strings.size() == 0) {
+		cout << "<No input strings loaded>\n";
+		return;
+	}
+	
+	// Display strings
 	for(int i=0; i<input_strings.size(); ++i) {
-		cout << i+1 << ") " << input_strings[i] << endl;
+		if(input_strings[i].size()) {
+			cout << i+1 << ") " << input_strings[i] << endl;
+		} else {
+			cout << i+1 << ") \\" << endl;
+		}
 	}
 	cout << endl;
 }
 
-// Quit
+
 /*
  (Q)uit
  Quit operation of ™ on input string before completion
@@ -246,7 +282,7 @@ void Menu::quit() {
 	}
 }
 
-// Run
+
 /*
  ( R )un
  Run ™ on input string
@@ -268,28 +304,33 @@ void Menu::run() {
 	
 	// Select Input String
 	if(!tm->is_operating()) {
-		cout << "Input String:[" << input_strings.size() << "]: ";
+		cout << "Input String:[";
+		input_strings.size() ?	cout << "1-" << input_strings.size() :
+								cout << "None available";
+		cout << "]: ";
 		string input_string;
 		std::getline(cin, input_string);
 		unsigned long index = atol(input_string.c_str());
 		if(input_strings.size() && index > 0 && input_string.length() == numDigits(index) && index <= input_strings.size() ) {
-			tm->initialize(input_strings[index-1]);
-			
+			tm->initialize(input_strings[index-1]);			
 			tm->view_instantaneous_description(config->MAX_ID_CHARS);
 		} else {
-			cout << "\nError - Invalid selection. " << index << "\n";
+			if(input_string.length())
+				cout << "\nError - Invalid selection. " << "\n";
+			return;
 		}
-	}
-	
+	}	
 	tm->perform_transitions(config->MAX_TRANSITIONS);
 	tm->view_instantaneous_description(config->MAX_ID_CHARS);
 }
 
-// Truncate
+
 /*
  (T)runcate
  Truncate instantaneous descriptions
- command allows user to change setting for max number of chars to left and right of tape head to display in ID during operation of ™ input string
+ command allows user to change setting for max 
+ number of chars to left and right of tape head to 
+ display in ID during operation of ™ input string
  same rules as SET  (positive ints > 0, same errors)
  */
 bool Menu::truncate() {
@@ -299,32 +340,34 @@ bool Menu::truncate() {
 	unsigned long new_value = atol(input_string.c_str());
 	if(input_string.length() == numDigits(new_value) && new_value > 0) {
 		config->MAX_ID_CHARS = new_value;
-		cout << "\nMax transitions changed.\n";
+		cout << "\nMax ID chars changed.\n";
 		return true;
 	}
-	cout << "\nError - Max transitions must be a number > 0.\n";
+	if(input_string.length())
+		cout << "\nError - Max ID chars must be a integer from 1 to " << LONG_MAX << "\n";
 	return false;
 }
 
 
 
-// view
 /*
  (V)iew
  View turfing machine (states, transition function, etc)
- Definition of currently loaded machine in a form readable to user (use curly braces, commas, etc etc) but don't display .def file contents.
+ Definition of currently loaded machine in a form readable 
+ to user (use curly braces, commas, etc etc) but don't 
+ display .def file contents.
  Description of ™ from .def file (without alteration)
  Formal specification of ™ M=(Q, sigma, gamma, sigma, q_0, B, F)
  example transition: DELTA(s0, A) = (s1, B, R)
  Don't use keywords from .def file
- use notation from formal specification as much as possible, including equal signs, parenthesis, comma, curly brackets, etc
+ use notation from formal specification as much as 
+ possible, including equal signs, parenthesis, comma, curly brackets, etc
  See turing machine specification paper handout
 */
 void Menu::view() {
 	tm->view_definition();
 }
 
-// Show
 /*
  Sho(w)
  Show status of application
@@ -353,22 +396,26 @@ void Menu::show() {
 	cout <<left<< setw(20) << "Instructor:" << "Neil Corrigan\n";
 	cout <<left<< setw(20) << "Version:" << "1.0\n";
 	cout <<left<< setw(20) << "Settings:" << "\n";
-	cout <<left<< setw(20) << "     Max Transitions:" << config->MAX_TRANSITIONS << "\n";
-	cout <<left<< setw(20) << "     Max ID Chars:" << config->MAX_ID_CHARS << "\n";
-	cout <<left<< setw(20) << "     Help:" <<
+	cout <<left<< setw(20) << "-- Max Transitions:" << config->MAX_TRANSITIONS << "\n";
+	cout <<left<< setw(20) << "-- Max ID Chars:" << config->MAX_ID_CHARS << "\n";
+	cout <<left<< setw(20) << "-- Help:" <<
 	(config->HELP_ON ? "ON" : "OFF") << "\n";
 	cout <<left<< setw(20) << "Current File:" << config->FILENAME_BASE << endl;
 	cout <<left<< setw(20) << "TM -- Running:" <<
 	(tm->is_operating() ? "YES" : "NO") << "\n";
 	if(tm->is_operating()) {
-		cout <<left<< setw(20) << "     Input String:" << tm->input_string() << "\n";
-		cout <<left<< setw(20) << "     Total Transitions:" << tm->total_number_of_transitions() << "\n";
+		cout <<left<< setw(20) << "-- Input String:" << tm->input_string() << "\n";
+		cout <<left<< setw(20) << "-- Total Transitions:" << tm->total_number_of_transitions() << "\n";
 	}
 	cout <<left<< setw(20) << "TM -- Used:" <<
 	(tm->is_used() ? "YES" : "NO") << "\n";
 	if(tm->is_used()) {
-		cout <<left<< setw(20) << "     Last Input String:" << tm->input_string() << "\n";
-		cout <<left<< setw(20) << "     Result:";
+		if(tm->input_string().length() > 0) {
+			cout <<left<< setw(20) << "-- Last Input String:" << tm->input_string() << "\n";
+		} else {
+			cout <<left<< setw(20) << "-- Last Input String: \\" << "\n";
+		}
+		cout <<left<< setw(20) << "-- Result:";
 		if(tm->is_accepted_input_string()) {
 			cout << "Accepted\n" <<left<<
 			setw(20) << "Total Transitions:" << tm->total_number_of_transitions() << endl;
@@ -379,7 +426,7 @@ void Menu::show() {
 
 }
 
-// exit
+
 /*
  E(x)it
  Exit application
@@ -389,22 +436,23 @@ void Menu::show() {
  on successfully writing file display success message
  */
 void Menu::exit() {
-	
-	// Save input string file .str
-	stringstream def;
-	def << config->FILENAME_BASE << ".str";
-	ofstream string_file(def.str());
-	if(! string_file.is_open()) {
-		cout << "Error opening input string file...\n";
-		return;
+	if(save_input_strings_on_exit) {
+		// Save input string file .str
+		stringstream def;
+		def << config->FILENAME_BASE << ".str";
+		ofstream string_file(def.str().c_str());
+		if(! string_file.is_open()) {
+			cout << "Error opening input string file...\n";
+			std::exit(-1);
+		}
+		
+		for(int i=0; i<input_strings.size(); ++i) {
+			string_file << input_strings[i];
+			if(i < input_strings.size()-1) string_file << endl;
+		}
+		cout << config->FILENAME_BASE << ".str updated successfully.\n";
+		string_file.close();
 	}
-	
-	for(int i=0; i<input_strings.size(); ++i) {
-		string_file << input_strings[i];
-		if(i < input_strings.size()-1) string_file << endl;
-	}
-	string_file.close();
-	
 	std::exit(0);
 }
 
