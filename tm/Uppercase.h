@@ -6,8 +6,8 @@
 // and chars to uppercase
 //
 // language: c++
-// computer: macbook air
-// OS: OSX
+// computer: Dell
+// OS: Linux
 // course: cpts_322
 //  Created by  Lansdon Page on 4/5/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.

@@ -4,8 +4,8 @@
 //This class represents the Input Alphabet which is the set of characters that are valid for an input string. This is a subset of the Tape Alphabet and excludes at minimum, the blank character.
 //
 // language: c++
-// computer: macbook air
-// OS: OSX
+// computer: Dell
+// OS: Linux
 // course: cpts_322
 //  Created by  Lansdon Page on 3/25/13.
 //  Copyright (c) 2013 Lansdon Page. All rights reserved.
